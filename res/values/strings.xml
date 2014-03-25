@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GeoQuiz</string>
+    <string name="action_settings">Settings</string>
+    <string name="question_text">I AM A QUESTION</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="correct_toast">Correct!</string>
+    <string name="wrong_toast">Incorrect!</string>
+    <string name="next_question">Next &gt;</string>
+    <string name="question_toto">Did you bless the rains down in africa?</string>
+    <string name="question_bad_religion">Can that be all there is?</string>
+    <string name="question_umphreys">would you be my only address?</string>
+    <string name="question_karl">Whats the point in that?</string>
+    <string name="prev_question">&lt; Prev</string>
+    <string name="cheat_button">Cheat!</string>
+    <string name="warning_text">Sure you wanna be a cheater?</string>
+    <string name="show_answer_button">Show Answer</string>
+    <string name="judgement_toast">Cheating is easy!</string>
+
+</resources>
