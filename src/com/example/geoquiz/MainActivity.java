@@ -1,6 +1,10 @@
 package com.example.geoquiz;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -19,6 +23,8 @@ public class MainActivity extends Activity {
 	private Button mPrevButton;
 	private Button mCheatButton;
 	private TextView mQuestionTextView;
+	private Boolean mCheatResult;
+	
 	private enum Direction {
 		NEXT(1),PREVIOUS(-1),HOME(0);
 		private int value;
@@ -42,14 +48,27 @@ public class MainActivity extends Activity {
 			new TrueFalse(R.string.question_umphreys, false)
 	};
 	private int mCurrentIndex = 0;
+	
+	
+	@TargetApi(11)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+			ActionBar actionBar = getActionBar();
+			actionBar.setSubtitle("DEVIOUS QUIZ");	
+		}
+		
 		if(savedInstanceState != null && savedInstanceState.containsKey(KEY_INDEX)){
 			mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
+			if(savedInstanceState.containsKey(CheatActivity.EXTRA_ANSWER_SELECTED)){
+				mCheatResult = savedInstanceState.getBoolean(CheatActivity.EXTRA_ANSWER_SELECTED);
+			}
 		}
 		setContentView(R.layout.activity_main);
+		
+		
 		
 		mTrueButton = (Button)findViewById(R.id.true_button);
 		mFalseButton = (Button)findViewById(R.id.false_button);
@@ -119,6 +138,10 @@ public class MainActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		Log.i(TAG, "IN THE SAVE INSTANCE METHOD");
 		outState.putInt(KEY_INDEX, mCurrentIndex);
+		//save if they are a cheater
+		if(mCheatResult != null){
+			outState.putBoolean(CheatActivity.EXTRA_ANSWER_SELECTED, mCheatResult);
+		}
 	}
 
 	@Override
@@ -147,11 +170,34 @@ public class MainActivity extends Activity {
 	}
 
 	private void checkAnswer(boolean userAnswer){
-		if(userAnswer == mQuestionBank[mCurrentIndex].isTrueQuestion()){
-			Toast.makeText(MainActivity.this,"Nice one!", Toast.LENGTH_SHORT).show();
-		} else {
-			Toast.makeText(MainActivity.this,"No way!", Toast.LENGTH_SHORT).show();
 
+		String retMessage;
+		
+		if(userAnswer == mQuestionBank[mCurrentIndex].isTrueQuestion()){
+			retMessage = getResources().getString(R.string.correct_answer_text);
+		} else {
+			retMessage = getResources().getString(R.string.incorrect_answer_text);
 		}
+		
+		if(mQuestionBank[mCurrentIndex].isCheater()){
+			retMessage += ", " + getResources().getString(R.string.cheat_answer_text);
+		}
+		
+		Toast.makeText(MainActivity.this, retMessage + "!", Toast.LENGTH_LONG).show();
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(data == null){
+			return;
+		}
+		
+		mCheatResult = data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SELECTED, false);
+		mQuestionBank[mCurrentIndex].setCheater();
+	}
+	
+	
 }

@@ -18,5 +18,8 @@
     <string name="warning_text">Sure you wanna be a cheater?</string>
     <string name="show_answer_button">Show Answer</string>
     <string name="judgement_toast">Cheating is easy!</string>
+    <string name="correct_answer_text">Nice one</string>
+    <string name="incorrect_answer_text">Nope</string>
+    <string name="cheat_answer_text">cheater</string>
 
 </resources>

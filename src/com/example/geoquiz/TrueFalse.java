@@ -5,6 +5,8 @@ public class TrueFalse {
 	
 	private boolean mTrueQuestion;
 	
+	private boolean mCheated = false;
+	
 	public TrueFalse(int question, boolean trueQuestion){
 		mQuestion = question;
 		mTrueQuestion = trueQuestion;
@@ -16,6 +18,14 @@ public class TrueFalse {
 
 	public void setQuestion(int question) {
 		this.mQuestion = question;
+	}
+	
+	public void setCheater(){
+		mCheated = true;
+	}
+	
+	public boolean isCheater(){
+		return mCheated;
 	}
 
 	public boolean isTrueQuestion() {
